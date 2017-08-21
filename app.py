@@ -1,6 +1,6 @@
 from flask import Flask, render_template,flash, redirect, url_for, sessions, logging
 from data import Articles
-from flask_mysqldb omport MySQL
+from flask_mysqldb import MySQL
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from passlib.hash import sha256_crypt
 
@@ -62,6 +62,8 @@ def register():
 
 		cur = mysql.connection.cursor()
 
+		#Execute Query
+
 		cur.execute("INSERT INTO users(name, email, username, password) VALUES (%s, %s, %s, %s)", (name, email, username, password))
 
 
@@ -75,7 +77,7 @@ def register():
 
 		flash('You are now registeres and logged in', 'success')
 
-		redirect(url_for('index'))
+		return redirect(url_for('login'))
 
 		return render_template('register.html',)
 
@@ -87,4 +89,5 @@ def register():
 
 
 if __name__ == '__main__':
+	app.secret_key='secret123'
 	app.run(debug=True)
